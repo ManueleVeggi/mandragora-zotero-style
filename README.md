@@ -34,9 +34,11 @@ Lo stile **non produce automaticamente** «Id.» nelle note a piè di pagina. Qu
 
 ## Tipi di voce e campi da compilare
 
+**NB** Il carattere "-" indica il valore specifico della fonte citata. Vengono qui specificati solo i casi di possibile ambiguità
+
 ### Monografia
 
-Tipo voce: **Libro** ("-" indica il valore specifico della fonte, non campo vuoto).
+Tipo voce: **Libro**
 
 | Campo | Note |
 |---|---|
