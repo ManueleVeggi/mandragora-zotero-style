@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0.2"
+       default-locale="it" page-range-format="expanded"
+       demote-non-dropping-particle="sort-only">
+  <info>
+    <title>Mandragora – Norme redazionali (stile a note)</title>
+    <id>http://www.zotero.org/styles/mandragora-norme-redazionali</id>
+    <link href="http://www.zotero.org/styles/mandragora-norme-redazionali" rel="self"/>
+    <author>
+      <name>Stile personalizzato basato sulle Norme redazionali Mandragora</name>
+    </author>
+    <category citation-format="note"/>
+    <category field="humanities"/>
+    <summary>Stile a note (ibid./ivi automatici) basato sulle Norme redazionali Mandragora: nomi per esteso, titoli in corsivo, "a cura di", pagine non abbreviate, numeri di volume in numeri romani.</summary>
+    <updated>2026-06-19T00:00:00Z</updated>
+  </info>
+
+  <!-- ===================== MACRO DI BASE ===================== -->
+
+  <macro name="autori">
+    <names variable="author">
+      <name delimiter=", " name-as-sort-order="never" et-al-min="4" et-al-use-first="1"/>
+      <et-al value="et al."/>
+    </names>
+  </macro>
+
+  <macro name="autori-breve">
+    <names variable="author">
+      <name form="short" delimiter=", " et-al-min="4" et-al-use-first="1"/>
+      <et-al value="et al."/>
+      <substitute>
+        <names variable="editor">
+          <name form="short" delimiter=", " et-al-min="4" et-al-use-first="1"/>
+          <et-al value="et al."/>
+        </names>
+      </substitute>
+    </names>
+  </macro>
+
+  <!-- NOTA: le norme Mandragora specificano "più di tre autori -> et al." solo per
+       gli autori; per i curatori dicono solo "la menzione dei curatori" senza un
+       tetto numerico esplicito. Si estende qui per analogia la stessa soglia. -->
+  <macro name="curatori">
+    <group delimiter=" ">
+      <text value="a cura di"/>
+      <names variable="editor">
+        <name delimiter=", " name-as-sort-order="never" et-al-min="4" et-al-use-first="1"/>
+        <et-al value="et al."/>
+      </names>
+    </group>
+  </macro>
+
+  <macro name="titolo">
+    <text variable="title" font-style="italic"/>
+  </macro>
+
+  <macro name="titolo-breve">
+    <text variable="title" form="short" font-style="italic"/>
+  </macro>
+
+  <macro name="titolo-contenitore">
+    <text variable="container-title"/>
+  </macro>
+
+  <!-- "catalogo della mostra (Luogo, sede, anno)" / "atti del convegno (Luogo, date)"
+       Il "Luogo" usato qui è semplicemente il campo Luogo normale di Zotero
+       (publisher-place): nessun campo Extra necessario nel caso comune in cui
+       il luogo della mostra/convegno coincide con quello di stampa.
+
+       Per il luogo dell'evento, quando è DIVERSO da quello di stampa, NON si usa
+       "Event Place": quel campo condivide il dato col campo nativo Luogo (se
+       Luogo è compilato, Event Place in Extra viene ignorato da Zotero — limite
+       noto, confermato dagli sviluppatori). Si usa invece "Archive Place", una
+       variabile CSL senza alcun campo nativo corrispondente in Zotero (per
+       nessun tipo di voce): non può quindi mai entrare in conflitto col Luogo.
+       In Extra:
+          Genre: catalogo della mostra   (necessario, nessun campo nativo equivalente)
+          Archive Place: Empoli          (luogo della mostra/del convegno, se diverso dal Luogo di stampa)
+          Event Date: 2025               (facoltativo: se assente si usa l'anno di pubblicazione) -->
+  <macro name="luogo-data-evento">
+    <group prefix="(" suffix=")" delimiter=", ">
+      <choose>
+        <if variable="archive-place">
+          <text variable="archive-place"/>
+        </if>
+        <else>
+          <text variable="publisher-place"/>
+        </else>
+      </choose>
+      <choose>
+        <if variable="event-date">
+          <date variable="event-date">
+            <date-part name="year"/>
+          </date>
+        </if>
+        <else>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </else>
+      </choose>
+    </group>
+  </macro>
+
+  <macro name="genere-evento">
+    <choose>
+      <if variable="genre">
+        <group delimiter=" ">
+          <text variable="genre"/>
+          <text macro="luogo-data-evento"/>
+        </group>
+      </if>
+    </choose>
+  </macro>
+
+  <macro name="volumi-opera">
+    <choose>
+      <if variable="number-of-volumes">
+        <group delimiter=" ">
+          <number variable="number-of-volumes"/>
+          <text value="voll."/>
+        </group>
+      </if>
+    </choose>
+  </macro>
+
+  <macro name="volume-romano">
+    <choose>
+      <if variable="volume">
+        <number variable="volume" form="roman"/>
+      </if>
+    </choose>
+  </macro>
+
+  <!-- Luogo, Editore, Anno  /  oppure  Luogo Anno (senza editore) -->
+  <macro name="edizione">
+    <choose>
+      <if variable="publisher">
+        <group delimiter=", ">
+          <text variable="publisher-place"/>
+          <text variable="publisher"/>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </group>
+      </if>
+      <else>
+        <group delimiter=" ">
+          <text variable="publisher-place"/>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </group>
+      </else>
+    </choose>
+  </macro>
+
+  <!-- Variante di "edizione" da usare SOLO dove è già comparso un inciso
+       "atti del convegno/catalogo della mostra (Luogo, Anno)": se quel Luogo
+       proveniva per default dal campo Luogo normale (nessun Archive Place
+       diverso impostato), qui si omette per non ripeterlo due volte.
+       Se invece Archive Place è stato impostato (luogo dell'evento diverso da
+       quello di stampa), qui il Luogo di stampa torna a comparire normalmente. -->
+  <macro name="edizione-evento">
+    <choose>
+      <if variable="publisher">
+        <group delimiter=", ">
+          <choose>
+            <if variable="archive-place">
+              <text variable="publisher-place"/>
+            </if>
+          </choose>
+          <text variable="publisher"/>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </group>
+      </if>
+      <else>
+        <group delimiter=" ">
+          <choose>
+            <if variable="archive-place">
+              <text variable="publisher-place"/>
+            </if>
+          </choose>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </group>
+      </else>
+    </choose>
+  </macro>
+
+  <!-- pp. 00-00[: 00] per capitoli/articoli -->
+  <macro name="pagine-estensione">
+    <group delimiter=": ">
+      <group delimiter=" ">
+        <label variable="page" form="short"/>
+        <text variable="page"/>
+      </group>
+      <text variable="locator"/>
+    </group>
+  </macro>
+
+  <!-- p. 00 (per la nota su un'opera senza estensione, es. monografie) -->
+  <macro name="punto-locatore">
+    <choose>
+      <if variable="locator">
+        <group delimiter=" ">
+          <label variable="locator" form="short"/>
+          <text variable="locator"/>
+        </group>
+      </if>
+    </choose>
+  </macro>
+
+  <!-- ===================== CITAZIONE COMPLETA PER TIPOLOGIA ===================== -->
+
+  <macro name="citazione-completa">
+    <choose>
+
+      <!-- ARTICOLI IN RIVISTA -->
+      <if type="article-journal">
+        <group delimiter=", ">
+          <text macro="autori"/>
+          <text macro="titolo"/>
+          <group>
+            <text value="«"/>
+            <text variable="container-title"/>
+            <text value="»"/>
+          </group>
+          <choose>
+            <if variable="issue">
+              <group delimiter=" ">
+                <text value="n."/>
+                <text variable="issue"/>
+              </group>
+            </if>
+          </choose>
+          <text macro="volume-romano"/>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+          <text macro="pagine-estensione"/>
+        </group>
+      </if>
+
+      <!-- CONTRIBUTI A CONVEGNO: si usa il campo nativo "Nome del convegno" (event),
+           in corsivo come il titolo di un volume, seguito dalla dicitura
+           "atti del convegno (Luogo, anno)" — Luogo/anno presi da Event Place /
+           Event Date (con Extra, come per i cataloghi) per evitare la duplicazione
+           del Luogo che Zotero rispecchia su publisher-place per questo tipo.
+           Il campo "Titolo Atti" (container-title) resta ignorato. -->
+      <else-if type="paper-conference">
+        <group delimiter=", ">
+          <choose>
+            <if variable="author">
+              <text macro="autori"/>
+            </if>
+          </choose>
+          <text macro="titolo"/>
+          <text variable="container-title"/>
+          <group delimiter=" ">
+            <text value="atti del convegno"/>
+            <text macro="luogo-data-evento"/>
+          </group>
+          <choose>
+            <if variable="editor">
+              <text macro="curatori"/>
+            </if>
+          </choose>
+          <text macro="volumi-opera"/>
+          <text macro="edizione-evento"/>
+          <text macro="volume-romano"/>
+          <text macro="pagine-estensione"/>
+        </group>
+      </else-if>
+
+      <!-- CAPITOLI / CONTRIBUTI IN VOLUMI MISCELLANEI, SCHEDE DI CATALOGO, VOCI ENCICLOPEDICHE -->
+      <else-if type="chapter entry-dictionary entry-encyclopedia" match="any">
+        <group delimiter=", ">
+          <choose>
+            <if variable="author">
+              <text macro="autori"/>
+            </if>
+          </choose>
+          <text macro="titolo"/>
+          <group delimiter=" ">
+            <text value="in"/>
+            <text macro="titolo-contenitore"/>
+          </group>
+          <text macro="genere-evento"/>
+          <choose>
+            <if variable="editor">
+              <text macro="curatori"/>
+            </if>
+          </choose>
+          <text macro="volumi-opera"/>
+          <choose>
+            <if variable="genre">
+              <text macro="edizione-evento"/>
+            </if>
+            <else>
+              <text macro="edizione"/>
+            </else>
+          </choose>
+          <text macro="volume-romano"/>
+          <text macro="pagine-estensione"/>
+        </group>
+      </else-if>
+
+      <!-- MONOGRAFIE / VOLUMI CURATI (atti, cataloghi citati come opera intera) -->
+      <else>
+        <group delimiter=", ">
+          <choose>
+            <if variable="author">
+              <text macro="autori"/>
+            </if>
+          </choose>
+          <text macro="titolo"/>
+          <text macro="genere-evento"/>
+          <choose>
+            <if variable="author"/>
+            <else>
+              <choose>
+                <if variable="editor">
+                  <text macro="curatori"/>
+                </if>
+              </choose>
+            </else>
+          </choose>
+          <text macro="volumi-opera"/>
+          <choose>
+            <if variable="genre">
+              <text macro="edizione-evento"/>
+            </if>
+            <else>
+              <text macro="edizione"/>
+            </else>
+          </choose>
+        </group>
+        <choose>
+          <if variable="locator">
+            <text macro="punto-locatore" prefix=", "/>
+          </if>
+        </choose>
+      </else>
+    </choose>
+  </macro>
+
+  <!-- ===================== NOTE (ibid. / ivi / forma breve) ===================== -->
+
+  <citation>
+    <layout suffix=".">
+      <choose>
+        <if position="ibid-with-locator">
+          <group delimiter=", ">
+            <text value="Ivi"/>
+            <text macro="punto-locatore"/>
+          </group>
+        </if>
+        <else-if position="ibid">
+          <text value="Ibid."/>
+        </else-if>
+        <else-if position="subsequent">
+          <group delimiter=", ">
+            <text macro="autori-breve"/>
+            <text macro="titolo-breve"/>
+            <date variable="issued">
+              <date-part name="year"/>
+            </date>
+          </group>
+          <text macro="punto-locatore" prefix=", "/>
+        </else-if>
+        <else>
+          <text macro="citazione-completa"/>
+        </else>
+      </choose>
+    </layout>
+  </citation>
+
+  <!-- ===================== BIBLIOGRAFIA FINALE (facoltativa) ===================== -->
+
+  <bibliography hanging-indent="true" entry-spacing="1"
+                subsequent-author-substitute="Id." subsequent-author-substitute-rule="complete-all">
+    <sort>
+      <key macro="autori-breve"/>
+      <key variable="issued"/>
+    </sort>
+    <layout suffix=".">
+      <text macro="citazione-completa"/>
+    </layout>
+  </bibliography>
+
+</style>
