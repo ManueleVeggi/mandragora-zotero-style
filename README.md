@@ -48,7 +48,7 @@ Tipo voce: **Libro**
 | Editore | — |
 | Data | anno |
 
-> Erwin Panofsky, *Meaning in the Visual Arts*, New York, Anchor Books, 1955.
+> Mario Rossi, *Titolo volume*, Città, Editore, Anno.
 
 ---
 
@@ -118,9 +118,9 @@ E opzionalmente, se l'anno dell'evento differisce da quello di stampa:
 Event Date: 2025
 ```
 
-> *Empoli 1424. Masolino e gli albori del Rinascimento*, catalogo della mostra (Firenze, 2025), a cura di Andrea De Marchi, Firenze, Mandragora, 2025.
+> *Empoli 1424. Masolino e gli albori del Rinascimento*, catalogo della mostra (Firenze, 2024), a cura di Andrea De Marchi, Firenze, Mandragora, 2024.
 
-> *Empoli 1424. Masolino e gli albori del Rinascimento*, catalogo della mostra (Empoli, Museo della Collegiata, 2025), a cura di Andrea De Marchi, Firenze, Mandragora, 2025.
+> *Empoli 1424. Masolino e gli albori del Rinascimento*, catalogo della mostra (Empoli, Museo della Collegiata, **2025**), a cura di Andrea De Marchi, Firenze, Mandragora, 2024.
 
 ---
 
@@ -150,8 +150,8 @@ Genre: atti del convegno
 | Pagine | estensione del contributo |
 | **Extra** | `Genre: catalogo della mostra` oppure `Genre: atti del convegno` + eventuali Archive Place, Publisher Place, Event Date |
 
-> Andrea De Marchi, *Pacio Vesmias*, in  Empoli 1424. Masolino e gli albori del Rinascimento, catalogo della mostra (Empoli, Museo della Collegiata, 2025), a cura di Andrea De Marchi, Firenze, Mandragora, 2025, pp. 120-128: 124.
+> Andrea De Marchi, *Pacio Vesmias*, in  Empoli 1424. Masolino e gli albori del Rinascimento, catalogo della mostra (Empoli, Museo della Collegiata, 2025), a cura di Andrea De Marchi, Firenze, Mandragora, 2024, pp. 120-128: 124.
 
-> Giovanni Leucci et al., *Non-destructive diagnosis at the Brancacci Chapel*, in Proceedings of the International Conference on Metrology for Archaeology and Cultural Heritage (IMEKO TC4), atti del convegno (Cosenza, 2022), IMEKO, 2022, pp. 521-525: 522.
+> Giovanni Leucci et al., *Non-destructive diagnosis at the Brancacci Chapel*, in Proceedings of the International Conference on Metrology for Archaeology and Cultural Heritage (IMEKO TC4), atti del convegno (Cosenza, 2022), IMEKO, 2023, pp. 521-525: 522.
 
 ---
