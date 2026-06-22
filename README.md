@@ -1,7 +1,4 @@
 # Stile Zotero – Norme redazionali Mandragora
-## Istruzioni per l'installazione e l'uso
-
----
 
 ## Installazione
 
